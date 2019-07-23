@@ -221,8 +221,7 @@
 </template>
 <script>
   import {MyTree, Base} from '@/components'
-  import $http from '../https.js'
-  import axios from 'axios';
+  import {textData} from '@/api/index'
   export default {
     name: 'Main',
     components: {
@@ -360,16 +359,15 @@
         let data = {...stuff,...this.addTableSelectData,...this.partData}
         this.addTableDbclick(data)
       },
+      loadData(){
+        textData().then(data=>{
+          console.log(data);
+        })
+      },
     },
     created(){
-      this.$http.get('/user') //全局引入使用vue原型中的方法this.$http,已经把axios添加到原型中
-        .then((res)=>{
-          console.log(res.data.data)
-          this.datalist = res.data.data
-        })
-        .catch((err)=>{
-          console.log('调用失败',err)
-        })
+      this.$axios.get('/main/index').then(data=>console.log(data)  )
+      // this.loadData()
     },
   }
 </script>
