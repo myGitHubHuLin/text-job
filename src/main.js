@@ -3,7 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import axios from 'axios';
+import './mock.js'
+Vue.prototype.$axios = axios;
+import QS from 'qs'
+Vue.prototype.qs = QS;
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

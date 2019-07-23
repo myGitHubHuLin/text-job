@@ -2,7 +2,7 @@
   <div>
     <el-row v-for="(item,index) in data" :key="index" class="my-tree-main">
       <div class="tree-list" @click="clickTitle(item.areId)">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-menu" :style="`color:${item.color}`"></i>
         <span>{{`${item.areId}(${item.num || 0})`}}</span>
       </div>
       <dl v-show="item.areId===selectAreId" v-for="(patient,index1) in item.children" :key="index1" class="tree-detail">

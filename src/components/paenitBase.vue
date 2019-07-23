@@ -4,7 +4,7 @@
       <i class="el-icon-share" style="font-size: 60px"></i>
     </el-col>
     <el-col :span="17" class="base-table">
-      <span v-for="(item,index) in baseClum" :key="index"  :class="{'no-border':index === baseClum.length-1 || index === 5,'border-buttom':index <= 5}">
+      <span v-for="(item,index) in baseClum" :key="index"  :class="{'no-border':index === baseClum.length-1 || index === 5,'border-buttom':index <= 5,'spWidth' : index === 5}">
         <b style="margin-right: 5px">{{`${item.title}:`}}</b>
         {{`${base[item.fild]}`}}
       </span>
@@ -55,5 +55,8 @@
   }
   .border-buttom{
     border-bottom: 1px solid #cdcdcd;
+  }
+  .spWidth{
+    width: calc(100% - 801px);
   }
 </style>
