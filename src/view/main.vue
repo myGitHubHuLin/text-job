@@ -123,9 +123,10 @@
                 class="input input1"
                 :value="partData.dose || ''"
                 @input="(e)=>inputClick(e,'dose')"
-                >
+              >
                 <i slot="suffix" class="el-icon-caret-top" @click="partData.dose++"></i>
-                <i slot="suffix" class="el-icon-caret-bottom" @click="partData.dose>0 ? partData.dose-- : partData.dose = 0"></i>
+                <i slot="suffix" class="el-icon-caret-bottom"
+                   @click="partData.dose>0 ? partData.dose-- : partData.dose = 0"></i>
               </el-input>
               <span style="color: #2018CE;font-size: 12px">10亿单位</span>
             </div>
@@ -151,7 +152,8 @@
                 @input="(e)=>inputClick(e,'days')"
               >
                 <i slot="suffix" class="el-icon-caret-top" @click="partData.days++"></i>
-                <i slot="suffix" class="el-icon-caret-bottom" @click="partData.days>0 ? partData.days-- : partData.days = 0"></i>
+                <i slot="suffix" class="el-icon-caret-bottom"
+                   @click="partData.days>0 ? partData.days-- : partData.days = 0"></i>
               </el-input>
             </div>
             <div>
@@ -162,7 +164,8 @@
                 @input="(e)=>inputClick(e,'num')"
               >
                 <i slot="suffix" class="el-icon-caret-top" @click="partData.num++"></i>
-                <i slot="suffix" class="el-icon-caret-bottom" @click="partData.num>0 ? partData.num-- : partData.num = 0"></i>
+                <i slot="suffix" class="el-icon-caret-bottom"
+                   @click="partData.num>0 ? partData.num-- : partData.num = 0"></i>
               </el-input>
               <span style="color: #2018CE;font-size: 12px">桶</span>
             </div>
@@ -190,7 +193,7 @@
             </el-col>
           </el-col>
           <el-col v-show="isShowRightTwo" :span="12">
-            <el-col  style="min-height: 292px;position: relative ">
+            <el-col style="min-height: 292px;position: relative ">
               <div class="my-table">
                 <div class="my-table-header">
                   <span>耗材名称</span>
@@ -222,6 +225,7 @@
 <script>
   import {MyTree, Base} from '@/components'
   import {textData} from '@/api/index'
+
   export default {
     name: 'Main',
     components: {
@@ -231,8 +235,8 @@
     data() {
       return {
         input: '',
-        data: [],
-        menu: ['患者概览', '诊断', '医嘱', '电子病历', '报告预览', '医嘱执行', '出入量维护', '观察项维护', '导管维护', '病情记录', '特护单', '护理评估单', '会诊', '时间轴'],
+        data: [], // 患者数据
+        menu: [], // 患者菜单
         base: {
           name: '杨青青',
           id: '1234567',
@@ -266,22 +270,30 @@
           title: '作废',
           del: '1'
         }, {title: '保存'}, {title: '提交'},],
-        tableColumn: [{prop: 'type', label: '类型', width: 180}, { prop: 'category',label: '类别', width: 180},
+        tableColumn: [{prop: 'type', label: '类型', width: 180}, {prop: 'category', label: '类别', width: 180},
           {prop: 'days', label: '天数', width: 180}, {prop: 'num', label: '数量', width: 180},
-          {prop: 'text', label: '医嘱内容', width: 180}, {prop: 'dose', label: '剂量', width: 180}, {prop: 'channel', label: '途径', width: 180
-          }, {prop: 'frequency', label: '频次', width: 180}, {prop: 'stropTime', label: '停止时间', width: 180}, {prop: 'specs', label: '规格', width: 180}],
+          {prop: 'text', label: '医嘱内容', width: 180}, {prop: 'dose', label: '剂量', width: 180}, {
+            prop: 'channel', label: '途径', width: 180
+          }, {prop: 'frequency', label: '频次', width: 180}, {
+            prop: 'stropTime',
+            label: '停止时间',
+            width: 180
+          }, {prop: 'specs', label: '规格', width: 180}],
         tableData: [],
-        tableSelectData:[],
+        tableSelectData: [],
         dialogVisible: false,
         addTableColumn: [{prop: 'text', label: '医嘱', width: 180}, {prop: 'specs', label: '规格'}],
-        addTableData: [{text:'(甲)复方干草剂',specs:'180ml/瓶'},{text:'(甲)复方干草剂',specs:'180ml/瓶'},{text:'(甲)复方干草剂',specs:'180ml/瓶'},],
-        addTableSelectData:[],
+        addTableData: [{text: '(甲)复方干草剂', specs: '180ml/瓶'}, {text: '(甲)复方干草剂', specs: '180ml/瓶'}, {
+          text: '(甲)复方干草剂',
+          specs: '180ml/瓶'
+        },],
+        addTableSelectData: [],
         spanValue: '临',
         spanValue1: '1',
-        num1:'',
-        partData:{dose:'',days:'',num:'',frequency:'',channel:''},
-        isShowRightFirst:false,// 是否显示右边详情
-        isShowRightTwo:false,// 是否显示右边消耗材料
+        num1: '',
+        partData: {dose: '', days: '', num: '', frequency: '', channel: ''},
+        isShowRightFirst: false,// 是否显示右边详情
+        isShowRightTwo: false,// 是否显示右边消耗材料
       }
     },
     methods: {
@@ -295,10 +307,10 @@
             this.dialogVisible = true
             break
           case 5:  // 作废
-            let select = [...this.tableSelectData],data= [...this.tableData]
-            for(let i=select.length-1;i>=0;i--){
+            let select = [...this.tableSelectData], data = [...this.tableData]
+            for (let i = select.length - 1; i >= 0; i--) {
               console.log(select[i].index);
-              data.splice(select[i].index,1)
+              data.splice(select[i].index, 1)
             }
             this.tableData = data
             break
@@ -306,10 +318,10 @@
             break
         }
       },
-      tableSelect(selection, row){  // 主表的check事件
+      tableSelect(selection, row) {  // 主表的check事件
         this.tableSelectData = selection
       },
-      selectAll(selection){
+      selectAll(selection) {
         this.tableSelectData = selection
       },
       handleClose() { // 弹框
@@ -325,49 +337,70 @@
           this.spanValue = val
         }
       },
-      tableRowClassName ({row, rowIndex}) { // 把表格的下标放进每一行中
+      tableRowClassName({row, rowIndex}) { // 把表格的下标放进每一行中
         row.index = rowIndex;
       },
-      addTableClick(row, column, event){  // table行单击事件
+      addTableClick(row, column, event) {  // table行单击事件
         let data = {...row}
         data.index = this.tableData.length
         this.isShowRightFirst = true
         this.addTableSelectData = data
         console.log(row.index, column.index, event);
       },
-      addTableDbclick(row, column, event){  // table双击事件
+      addTableDbclick(row, column, event) {  // table双击事件
         let data = {...row}
         data.index = this.tableData.length
         this.tableData.push(data)
         this.handleClose()
       },
-      showRightTwo(){  // 添加材料
+      showRightTwo() {  // 添加材料
         this.isShowRightTwo = true
       },
-      inputClick(e,path){  // input的公共方法
+      inputClick(e, path) {  // input的公共方法
         this.partData[path] = e
       },
-      partSelect(val,path){  // select的公共方法
+      partSelect(val, path) {  // select的公共方法
         this.partData[path] = val
       },
-      detailSave(){  // 直接保存
-        let data = {...this.addTableSelectData,...this.partData}
+      detailSave() {  // 直接保存
+        let data = {...this.addTableSelectData, ...this.partData}
         this.addTableDbclick(data)
       },
-      lastSave(){ // 材料保存
-        let stuff = {stuff:this.num1}
-        let data = {...stuff,...this.addTableSelectData,...this.partData}
+      lastSave() { // 材料保存
+        let stuff = {stuff: this.num1}
+        let data = {...stuff, ...this.addTableSelectData, ...this.partData}
         this.addTableDbclick(data)
       },
-      loadData(){
-        textData().then(data=>{
-          console.log(data);
+      loadData() { // 请求患者数据
+        this.axios.get('/main/index').then(res => {
+          let data = res.data
+          if (data && data.code === 200) {
+            this.data = data.data
+          } else {
+            console.warn('查询患者信息出错,执行错误处理')
+          }
+          console.log(data)
+        }).catch((mes) => {
+          console.warn(mes || '查询患者信息出错')
+        })
+      },
+      loadMenu(){   // 查询菜单
+        this.axios.get('/get/menu').then(res => {
+          let data = res.data
+          if (data && data.code === 200) {
+            this.menu = data.data
+          } else {
+            console.warn('查询患者信息出错,执行错误处理')
+          }
+          console.log(data)
+        }).catch((mes) => {
+          console.warn(mes || '查询患者信息出错')
         })
       },
     },
-    created(){
-      this.$axios.get('/main/index').then(data=>console.log(data)  )
-      // this.loadData()
+    created() {
+      this.loadData()
+      this.loadMenu()
     },
   }
 </script>
@@ -589,46 +622,50 @@
     }
   }
 
-  .my-table{
+  .my-table {
     max-height: calc(100% - 46px);
     overflow: auto;
-    >div{
+    > div {
       height: 30px;
       font-size: 12px;
       text-align: left;
       display: flex;
-      >span{
+      > span {
         display: inline-flex;
         align-items: center;
         padding-left: 10px;
         border-bottom: 1px solid #cdcdcd;
         border-right: 1px solid #cdcdcd;
       }
-      >span:first-child{
+      > span:first-child {
         width: 55%;
       }
-      >span:last-child{
+      > span:last-child {
         width: 45%;
       }
     }
-    .my-table-header{
+    .my-table-header {
       font-weight: bold;
       background: #F5F5F5;
     }
-    .my-table-cell{
+    .my-table-cell {
 
     }
   }
+
   .el-table thead {
     color: #000;
   }
+
   .el-table th, .el-table__row td {
     padding: 6px 0;
   }
-  .el-table--enable-row-hover .el-table__body tr:hover>td{
+
+  .el-table--enable-row-hover .el-table__body tr:hover > td {
     background-color: @main-back !important;
     color: #fff;
   }
+
   .el-table td,
   .el-table th.is-leaf {
     border-bottom: 1px solid #cdcdcd;
@@ -636,12 +673,12 @@
 
   .el-table--border th,
   .el-table--border th.gutter:last-of-type {
-    border-bottom: 1px solid  #cdcdcd;
+    border-bottom: 1px solid #cdcdcd;
   }
 
   .el-table--border td,
   .el-table--border th {
-    border-right: 1px solid  #cdcdcd;
+    border-right: 1px solid #cdcdcd;
   }
 </style>
 
