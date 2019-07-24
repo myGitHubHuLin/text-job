@@ -55,6 +55,19 @@
     overflow: hidden;
     font-size: 20px;
     font-weight: bold;
+    height: 60px;
+    >div:nth-child(2){
+      height: 100%;
+    }
+    >div:nth-child(3){
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .header-col{
+      white-space: nowrap;
+      overflow: hidden;
+    }
     ul {
       background: @main-back;
       border-bottom: 0;

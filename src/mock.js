@@ -142,5 +142,5 @@ const menu = Mock.mock('/get/menu','get',(req,res)=>{
 
   }
 })
-export default {vehicle}
+export default {vehicle,menu}
 
